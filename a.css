@@ -12,6 +12,10 @@ a {
 	
 }
 
+hr {
+	border: 1px solid black;
+}
+
 #fg {
 	margin:auto;
 	width:95%;
@@ -62,7 +66,7 @@ div.box {
 }
 
 div.sechead {
-	background-color: #422CFF;
+	background-color: #00199B;
 	color:#E8E8E8;
 	font-size:14px;
 	font-weight:bold;
@@ -79,7 +83,7 @@ div.secbody a {
 	height:100%;
 }
 
-div.secbody img {
+img.rp {
     max-width:100%;
     height:auto;
 }
