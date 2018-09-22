@@ -149,7 +149,7 @@ ul.hl span.m {
 }
 ul.hl span.k {
 	background-color:#009955;
-	background-image: linear-gradient(to top right, #009955, #31FFA4);
+	background-image: linear-gradient(to top right, #009955, #45D093);
 }
 ul.hl span.s {
 	background-color:#0B27BF;
@@ -185,7 +185,7 @@ span.hl a {
 #nav div.secbody {
 	padding:0 0 0 0;
 	margin:0 0 0 0;
-	font-size:10px;
+	font-size:12px;
 }
 
 #wid {
