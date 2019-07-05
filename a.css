@@ -171,27 +171,41 @@ ul.nav{
 	list-style: none;
 }
 
+ul.nav li {
+	margin-bottom:2px;
+}
+
 ul.hl span {
 	font-weight:bold;
 	padding: 5px 5px 5px 5px;
-	border-radius:2px;
+	border-radius:3px;
 }
 
 ul.hl span.m {
 	background-color:#A55000;
 	background-image: linear-gradient(to top right, #A55000, #E8A05D);
+	border: 1px solid #A55000;
 }
 ul.hl span.k {
 	background-color:#009955;
 	background-image: linear-gradient(to top right, #009955, #45D093);
+	border: 1px solid #009955;
 }
 ul.hl span.s {
 	background-color:#0B27BF;
 	background-image: linear-gradient(to top right, #0B27BF, #8A96D5);
+	border: 1px solid #0B27BF;
 }
 ul.hl span.p {
 	background-color:#44828D;
 	background-image: linear-gradient(to top right, #44828D, #A2D3DB);
+	border: 1px solid #44828D;
+}
+
+ul.hl span.g {
+	background-color:#6A6A6A;
+	background-image: linear-gradient(to top right, #4B4F50, #DBDBDB);
+	border: 1px solid #4B4F50;
 }
 
 span.hl a {
