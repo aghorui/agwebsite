@@ -7,11 +7,7 @@ body {
 	margin:0;
 	font-family: sans;
 	font-size: 12px;
-<<<<<<< Updated upstream
-	background:#001F00 url("files/bg.png");
-=======
 	background:#001F00 url("files/bg2.png");
->>>>>>> Stashed changes
 }
 
 a {
@@ -45,12 +41,6 @@ hr {
 #p2 {
 	margin:0;
 	width:100%;
-}
-
-#p2 {
-	margin:0;
-	width:100%;
-	background:url("/files/bg2.png");
 }
 
 #nav {
@@ -112,18 +102,10 @@ hr {
 
 .wide-pad {
 	margin:auto;
-<<<<<<< Updated upstream
-	width:95%;
-}
-
-.wcap {
-	max-width:1200px;
-=======
 }
 
 .wcap {
 	max-width:1050px;
->>>>>>> Stashed changes
 }
 
 .gap {
@@ -265,12 +247,9 @@ body {
 	text-align:center;
 }
 
-<<<<<<< Updated upstream
-=======
 #p1-bg {
 	padding: 10px 10px 10px 10px;
 }
->>>>>>> Stashed changes
 
 
 div.table {
