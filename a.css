@@ -7,7 +7,11 @@ body {
 	margin:0;
 	font-family: sans;
 	font-size: 12px;
+<<<<<<< Updated upstream
 	background:#001F00 url("files/bg.png");
+=======
+	background:#001F00 url("files/bg2.png");
+>>>>>>> Stashed changes
 }
 
 a {
@@ -26,7 +30,21 @@ hr {
 }
 
 #p1 {
-	margin-bottom:10px;
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	background:url("/files/bg.png");
+}
+
+#p1-bg {
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+#p2 {
+	margin:0;
+	width:100%;
 }
 
 #p2 {
@@ -75,6 +93,13 @@ hr {
 	text-decoration-color:#EAEAEA;
 }
 
+#border {
+	margin:0;
+	height:5px;
+	background:url('/files/border.png');
+	background-repeat:repeat-x;
+}
+
 .clearfix::after {
 	content: "";
 	clear: both;
@@ -87,11 +112,18 @@ hr {
 
 .wide-pad {
 	margin:auto;
+<<<<<<< Updated upstream
 	width:95%;
 }
 
 .wcap {
 	max-width:1200px;
+=======
+}
+
+.wcap {
+	max-width:1050px;
+>>>>>>> Stashed changes
 }
 
 .gap {
@@ -217,13 +249,13 @@ body {
 }
 
 #nav div.secbody {
-	padding:0 0 0 0;
-	margin:0 0 0 0;
+	padding:0;
+	margin:0;
 	font-size:12px;
 }
 
 #wid {
-	padding: 0 0 0 0;
+	padding:0;
 	width:100%;
 	max-width:100%;
 	min-width:100%;
@@ -233,6 +265,12 @@ body {
 	text-align:center;
 }
 
+<<<<<<< Updated upstream
+=======
+#p1-bg {
+	padding: 10px 10px 10px 10px;
+}
+>>>>>>> Stashed changes
 
 
 div.table {
