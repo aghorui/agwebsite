@@ -226,12 +226,6 @@ span.hl a {
 	color:#EFEFEF;
 }
 
-@media screen and (max-width: 1024px) {
-div.sechead {
-	font-size:12px;
-}
-
-}
 
 @media screen and (max-width: 800px) {
 body {
