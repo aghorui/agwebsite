@@ -145,3 +145,7 @@ able to do was by reading through source code of FLIF and FFmpeg,
    hope it to be of help to others.
 3. Make the decoder stop at a certain zoomlevel, interpolate the data and
    produce a lower quality image for an interlaced FLIF image.
+
+## Additional Points
+* The original paper on rangecoders by G. N. N. Martin was retypeset in LaTeX by 
+  us and is available [here](https://aghorui.github.io/stuff/docs/ffmpeg-flif-gsoc-2020/renc.pdf)
