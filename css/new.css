@@ -1,0 +1,9 @@
+body {
+	font-family:sans;
+	font-family:"Calibri";
+}
+
+div.fg {
+	max-width: 1024px;
+	background-color:#E1E1E1;
+}
