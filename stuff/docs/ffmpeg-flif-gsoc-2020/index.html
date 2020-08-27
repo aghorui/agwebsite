@@ -1,13 +1,40 @@
-<h1 id="gsoc-2020-writing-a-flif-decoder-and-encoder-for-ffmpeg">GSOC 2020: Writing a FLIF decoder and encoder for <a href="https://ffmpeg.org">FFmpeg</a></h1>
+<h1 id="gsoc-2020-writing-a-flif-decoder-and-encoder-for-ffmpeg">GSOC 2020: Writing a FLIF Decoder and Encoder for <a href="https://ffmpeg.org">FFmpeg</a></h1>
 <p><a href="https://flif.info/">Free Lossless Image Format</a>, or FLIF is the precursor to <a href="https://jpeg.org/jpegxl/index.html">JPEG XL</a> and <a href="https://github.com/cloudinary/fuif">FUIF</a>. It claims to have a higher level of compression or lower file size than conventional lossless image formats like PNG, Lossless JPEG 2000, etc. FLIF and FUIF development has been stopped in favour of JPEG XL.</p>
 <p><a href="https://trac.ffmpeg.org/wiki/SponsoringPrograms/GSoC/2020#FLIFDecoderandEncoder">The task was to write an encoder and decoder for this format for FFmpeg.</a></p>
 <h2 id="authors">Authors</h2>
-<p>This project was undertaken by two people, which is apparently unusual for GSOC: * <a href="https://github.com/daujerrine/">Anamitra Ghorui</a> * <a href="https://github.com/kartikkhullar">Kartik K. Khullar</a></p>
+<p>This project was undertaken by two people, which is apparently unusual for GSOC:</p>
+<ul>
+<li><a href="https://github.com/daujerrine/">Anamitra Ghorui</a></li>
+<li><a href="https://github.com/kartikkhullar">Kartik K. Khullar</a></li>
+</ul>
 <p>Both of whom had submitted independent proposals for the same project. The public repository being used for communication during development is available <a href="https://github.com/daujerrine/ffmpeg">here</a>.</p>
 <h2 id="project-status-as-of-23rd-august-2020">Project Status as of 23rd August 2020</h2>
-<ul class="incremental">
+<pre><code>$ &gt; git diff --stat HEAD~4
+ Changelog                      |    3 +-
+ configure                      |    1 +
+ doc/general.texi               |    2 +
+ libavcodec/Makefile            |    3 +
+ libavcodec/allcodecs.c         |    1 +
+ libavcodec/codec_desc.c        |    7 +
+ libavcodec/codec_id.h          |    1 +
+ libavcodec/flif16.c            |  204 +++
+ libavcodec/flif16.h            |  287 ++++
+ libavcodec/flif16_parser.c     |  193 +++
+ libavcodec/flif16_rangecoder.c |  800 +++++++++++
+ libavcodec/flif16_rangecoder.h |  400 ++++++
+ libavcodec/flif16_transform.c  | 2895 ++++++++++++++++++++++++++++++++++++++++
+ libavcodec/flif16_transform.h  |  124 ++
+ libavcodec/flif16dec.c         | 1764 ++++++++++++++++++++++++
+ libavcodec/parsers.c           |    1 +
+ libavcodec/version.h           |    2 +-
+ libavformat/Makefile           |    1 +
+ libavformat/allformats.c       |    1 +
+ libavformat/flifdec.c          |  431 ++++++
+ libavformat/version.h          |    2 +-
+ 21 files changed, 7120 insertions(+), 3 deletions(-)</code></pre>
+<ul>
 <li>The decoder is complete and can decode all tested FLIF files with slightly better performance efficiency and better memory efficiency than <a href="https://github.com/FLIF-hub/FLIF">the reference decoder</a>.</li>
-<li>The decoder has however not yet been merged into FFmpeg's upstream repository.</li>
+<li>The decoder has however not yet been merged into FFmpeg’s upstream repository.</li>
 <li>The encoder is now being written. It will not be completed within the GSOC period.</li>
 </ul>
 <h2 id="list-of-public-submissions-of-sourcecode">List of Public Submissions of Sourcecode</h2>
@@ -27,39 +54,52 @@ http://ffmpeg.org/pipermail/ffmpeg-devel/2020-August/268475.html
 http://ffmpeg.org/pipermail/ffmpeg-devel/2020-August/268476.html</code></pre>
 <h2 id="author-comments">Author Comments</h2>
 <h3 id="regarding-flif">Regarding FLIF</h3>
-<ul class="incremental">
-<li>FLIF's <a href="https://flif.info/spec.html">Reference Specification</a> is inadequate for actually writing a working codec for the format. <a href="https://github.com/FLIF-hub/FLIF">The reference codec</a> is how most of the working and data documentation was derived while writing the codec.</li>
-<li>FLIF's reference codec is written in C++. From personal observation, the whole codec had been written poorly, both in terms of cosmetics and logic. While due to our inexperience we haven't written something that can be considered very elegant as of now, we believe that the code is at the very least more organised and logically sound than the reference codec.</li>
-<li>The disorganised manner the sourcecode was written is was also a cause of impedance in workflow.</li>
+<ul>
+<li>FLIF’s <a href="https://flif.info/spec.html">Reference Specification</a> is inadequate for actually writing a working codec for the format. <a href="https://github.com/FLIF-hub/FLIF">The reference codec</a> is how most of the working and data documentation was derived while writing the codec.</li>
+<li>FLIF’s reference codec is written in C++. From personal observation, the whole codec had been written poorly, both in terms of cosmetics and logic. While due to our inexperience we haven’t written something that can be considered very elegant as of now, we believe that the code is, at the very least, more organised and logically sound than the reference codec.</li>
+<li>The disorganised manner the sourcecode was written in was also a cause of impedance in workflow.</li>
 </ul>
 <h3 id="regarding-ffmpeg">Regarding FFmpeg</h3>
 <p>Developing for FFmpeg requires the interested party to read through a lot of the existing code base and refering to existing components of the same type for which one wants to develop, which I think is common and required for any software project.</p>
 <p>However I think there could be a few more pointers as to what a novice developer has to do, such as being told to expect reading through a lot of source code, and what files must one refer to if one wants to develop a component.</p>
 <p>In the initial stages of working for this project, I was in a disarray as to what to do and where to start from. Understanding what a component even does was a large part of the time spent.</p>
-<p>For example, The description of <code>libavformat</code> in FFmpeg's documentation says that it deals with format <em>demuxers, muxers and I/O</em>, which means that, say for a video file, the audio and video streams are separated (or demuxed) or joined together (muxed) for processing into decoders. This is the primary purpose of <code>libavformat</code>, but its usage of the term (de)muxer is broader than that.</p>
-<p>A demuxer in <code>libavformat</code> is also responsible for probing the said format, reading the header of the format, and, of course, what is sent to the decoder as the packet. All of this could have been inferred from the phrase 'I/O' in the description but I initially did not make the connection. This all makes sense when one gets the idea of a clear distinction between <em>container formats</em> (eg. all video files with sound such as webm) and <em>encoding formats</em> (the format of an audio or a video stream), which I did have an intuitive sense of, but wasn't articulate. A lot of the confusion came from the meaning of the term demuxer and whether or not it is used for only container formats or encoding formats as well. This brings us to the next section:</p>
+<p>For example, The description of <code>libavformat</code> in FFmpeg’s documentation says that it deals with format <em>demuxers, muxers and I/O</em>, which means that, say for a video file, the audio and video streams are separated (or demuxed) or joined together (muxed) for processing into decoders. This is the primary purpose of <code>libavformat</code>, but its usage of the term (de)muxer is broader than that.</p>
+<p>A demuxer in <code>libavformat</code> is also responsible for probing the said format, reading the header of the format, and, of course, what is sent to the decoder as the packet. All of this could have been inferred from the phrase ‘I/O’ in the description but I initially did not make the connection. This all makes sense when one gets the idea of a clear distinction between <em>container formats</em> (eg. all video files with sound such as webm) and <em>encoding formats</em> (the format of an audio or a video stream), which I did have an intuitive sense of, but wasn’t articulate. A lot of the confusion came from the meaning of the term demuxer and whether or not it is used for only container formats or encoding formats as well. This brings us to the next section:</p>
 <h3 id="regarding-us">Regarding Us</h3>
-<p>Maybe a lot of the above problems could have been completely avoided and saved us time if we had went through the FFmpeg manpage thoroughly as well as rest of the documentation (non-API).</p>
-<p>My (Anamitra) experience with FFmpeg before the project was limited to clipping videos, extracting individual frames from gifs, conversion between image formats and reducing file sizes of videos, all of which I assume are the most common use cases of FFmpeg. Therefore I did not have an above superficial understanding of FFmpeg.</p>
-<p>However, after working on the project for about half to one month, a lot of the on-site documentation now seems obvious to me. This was after having to go through the sourcecode of concerned files again and again and after writing a working template of the decoder by hand. The <a href="https://wiki.multimedia.cx/index.php/FFmpeg_codec_HOWTO">FFmpeg codec HOWTO</a> on MultimediaWiki does give useful pointers, but can be updated to provide a better description on how to write codecs for still image formats and gif like formats, which was the main hurdle for understanding considering our project, and in general a better anatomy of FFmpeg itself (which the manpages do provide, but not in a very direct manner and in the sense of the internal API itself). I have started to write a document about this for my own reference.</p>
-<p>In conclusion, I think there is a need for slightly better developer documentation, and providing pointers to new developers and a description what to expect while trying to develop for the code base. However, the hurdles I had encountered while developing for FFmpeg (and still am) are necessary to pass through for any developer to learn two important things:</p>
-<ol class="incremental" style="list-style-type: decimal">
+<p><em>Kartik has made his own comments <a href="https://gist.github.com/kartikkhullar/394183a8d29ce72494e31ff8024369bd">here</a>. Please check them out.</em></p>
+<p>Maybe a lot of the above problems could have been completely avoided and would have saved our time if we had went through the FFmpeg manpage thoroughly as well as rest of the documentation (non-API).</p>
+<p>My (Anamitra) experience with FFmpeg before the project was limited to clipping videos, extracting individual frames from gifs, conversion between image formats and reducing file sizes of videos, all of which I assume are the most common use cases of FFmpeg. Therefore I did not have much other than a superficial understanding of FFmpeg.</p>
+<p>However, after working on the project for about half to one month, a lot of the on-site documentation now seems obvious to me. This was after having to go through the sourcecode of concerned files again and again and after writing a working template of the decoder by hand. The <a href="https://wiki.multimedia.cx/index.php/FFmpeg_codec_HOWTO">FFmpeg codec HOWTO</a> on MultimediaWiki does give useful pointers, but can be updated to provide a better description on how to write codecs for still image formats and gif like formats, which was the main hurdle for understanding in the context of our project, and in general a better anatomy of FFmpeg itself (which the manpages do provide, but not in a very direct manner and in the sense of the internal API itself). I have started to write a document about this for my own reference.</p>
+<p>In conclusion, we think there is a need for slightly better developer documentation, and providing pointers to new developers and a description what to expect while trying to develop for the code base. However, I think the hurdles I had encountered while developing for FFmpeg (and still am) are necessary to pass through for any developer to learn two important things:</p>
+<ol type="1">
 <li>How to discover things by oneself.</li>
 <li>How to deduce, derive and figure out things by either testing or simply reading through the code.</li>
 </ol>
-<p>Talking with others (other than ourselves) never really took a center stage during the project (which the size and nature of the project had a hand in, and because of which we could not frequently send out patches). Most of what we were able to do was by reading through source code of FLIF and FFmpeg,</p>
-<h3 id="regarding-the-project">Regarding the project</h3>
-<ul class="incremental">
-<li>The project, as inferrable form previous sections had significantly consisted of how the format is actually encoded from the reference decoder.</li>
-<li>A large chunk of time as lost in understanding and translating the code of the interlaced decoder. The reference decoder had written it in a very convoluted manner and was order of magnitudes more convoluted than the non interlaced decoder. A few redundant functions that weren't even used in decoding were present. This was during July.</li>
+<p>Talking with others (other than ourselves) never really took a center stage during the project (which the size and nature of the project had a hand in, and because of which we could not frequently send out patches). Most of what we were able to do was by reading through source code of FLIF and FFmpeg.</p>
+<h3 id="regarding-the-project">Regarding the Project</h3>
+<p><em>Kartik has made his own comments <a href="https://gist.github.com/kartikkhullar/394183a8d29ce72494e31ff8024369bd">here</a>. Please check them out.</em></p>
+<ul>
+<li>Time spent on the project, as inferrable form previous sections, had significantly consisted of deducing how the format is actually encoded from the reference decoder.</li>
+<li>A large chunk of time was lost in understanding and translating the code of the interlaced decoder. The reference decoder had written it in a very convoluted manner and was order of magnitudes more convoluted than the non interlaced decoder. A few redundant functions that weren’t even used in decoding were present. This was during July.</li>
+</ul>
+<h3 id="technical-comments">Technical Comments</h3>
+<p>One of the main decisions made while writing the decoder was to convert it into a state machine, such that it can save states between intermittent packets. This was done because FLIF does not provide a simple method to determine the end of the file bitstream, since the entirety of the image data has been entropy coded. Aditionally, the whole frame data has been <a href="https://ffmpeg.org/pipermail/ffmpeg-devel/2020-February/257797.html">interleaved</a>, which makes it impossible to split the data into frames without reading the whole of the image data first.</p>
+<p>The reference decoder allocates frame data for duplicate frames and copies frame data into them. We could not find one reason why would one do this. So, at the very least, in this aspect, our decoder is more memory efficient.</p>
+<p>The reference decoder crashes on certain files while trying to decode eXmp metadata. This does not happen with our decoder.</p>
+<p>We may eventually rewrite the FLIF specification, such that the components are much clearer.</p>
+<h2 id="benefits-of-the-project">Benefits of the Project</h2>
+<ul>
+<li>JPEG XL uses an entropy coding method <a href="https://gitter.im/FLIF-hub/FLIF?at=5d5599a2beba830fff9b3824">similar to MANIAC</a>, and probably shares a lot of other similar components as well. If work on implementing JPEG XL in FFmpeg is initiated sometime in the future, this codec can be used as a base or reference for doing it.</li>
+<li>Very much improbable, but it may result in a bit more adoption of FLIF by people.</li>
 </ul>
 <h2 id="future-work">Future Work</h2>
-<ol class="incremental" style="list-style-type: decimal">
+<ol type="1">
 <li>The encoder, which is being written.</li>
 <li>As mentioned before, I (Anamitra) have started to write a document about the anatomy of FFmpeg. This is mostly for my own reference and learning, but I hope it to be of help to others.</li>
 <li>Make the decoder stop at a certain zoomlevel, interpolate the data and produce a lower quality image for an interlaced FLIF image.</li>
 </ol>
 <h2 id="additional-points">Additional Points</h2>
-<ul class="incremental">
-<li>The original paper on rangecoders by G. N. N. Martin was retypeset in LaTeX by us and is available <a href="https://aghorui.github.io/stuff/docs/ffmpeg-flif-gsoc-2020/renc.pdf">here</a></li>
+<ul>
+<li>The original paper on rangecoders by G. N. N. Martin was retypeset in LaTeX by us and is available <a href="https://aghorui.github.io/stuff/docs/ffmpeg-flif-gsoc-2020/renc.pdf">here</a>.</li>
+<li>This file is mirrored <a href="https://aghorui.github.io/stuff/docs/ffmpeg-flif-gsoc-2020/">here</a>.</li>
 </ul>
