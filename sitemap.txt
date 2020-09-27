@@ -1,5 +1,0 @@
-http://aghorui.github.io
-http://aghorui.github.io/index.html
-http://aghorui.github.io/stuff/docs/index.html
-http://aghorui.github.io/stuff/proj/index.html
-http://aghorui.github.io/stuff/toys/index.html
