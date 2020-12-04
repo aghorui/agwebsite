@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Screen Tester</title>
+<style>
+body {
+    font-family: Ubuntu, Calibri, sans;
+    font-size: 14px;
+}
+
+#log {
+    font-family: Noto Mono, monospace;
+    font-size: 12px;
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 5px 5px 5px 5px;
+    margin: 10px 10px 10px 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+p.alarm {
+    color: #FF4343;
+}
+
+p.warn {
+    color: #D68000;
+}
+</style>
+    </head>
+    <body>
+        <h1 style="margin-bottom: 5px;">SCREEN TESTER</h1>
+        <hr style="border: 1px solid black; margin-bottom: 20px;"/>
+        """"Anomalous behaviour"""" detected will appear here:
+        <div id="log">
+            <i style="color: grey;">Nothing here yet. You're in the clear, most likely.</i>
+        </div>
+<script>
+
+logtxt = document.getElementById("log")
+firstTime = true
+focus = true
+
+function addLogLine(s, type = 'alarm')
+{
+    if (firstTime) {
+        logtxt.innerHTML = ""
+        firstTime = false
+    }
+    d = new Date()
+    d = "[" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() + "." + d.getMilliseconds() + "]"
+    logtxt.innerHTML = "<p class='" + type + " '>" + d + " " + s + "</p>" + logtxt.innerHTML
+}
+
+window.addEventListener('resize', () => {
+    addLogLine("Window Resized");
+});
+
+window.addEventListener('cut', () => {
+    addLogLine("Attempt to CUT");
+});
+
+window.addEventListener('copy', () => {
+    addLogLine("Attempt to COPY");
+});
+
+window.addEventListener('paste', () => {
+    addLogLine("Attempt to PASTE");
+});
+
+window.addEventListener('keydown', () => {
+    addLogLine("Attempt to TYPE");
+});
+
+window.addEventListener('mouseup', () => {
+    if(window.getSelection().toString() !== "")
+        addLogLine("Attempt to TEXT SELECT");
+});
+
+window.addEventListener('visibilitychange', () => {
+    if (document.hidden)
+        addLogLine("Page no longer visible");
+    else
+        addLogLine("Page visible", 'warn');
+});
+
+window.addEventListener('focus', () => {
+    if (!focus) {
+        addLogLine("Focus Regained", 'warn')
+        focus = true
+    }
+});
+
+window.addEventListener('blur', () => {
+    addLogLine("Focus Lost");
+    focus = false
+});
+
+window.addEventListener('online', () => {
+    addLogLine("You are ONLINE", 'warn');
+});
+
+window.addEventListener('offline', () => {
+    addLogLine("You are OFFLINE", 'warn');
+});
+</script>
+    </body>
+</html>
